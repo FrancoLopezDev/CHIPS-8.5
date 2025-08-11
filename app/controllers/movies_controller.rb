@@ -45,6 +45,25 @@ class MoviesController < ApplicationController
     redirect_to movies_path
   end
 
+  def search_tmdb
+    # If they don't provide a title for the movie
+    # puts params[:title]
+    # if params[:search_terms].nil?
+    #   flash[:notice] = "Please fill in all required fields!"
+    #   return
+    # end
+
+    search_array = {title: params[:title], release_date: params[:release_date], language: params[:language]}
+
+    # Search for movies matching the search terms
+    @movies = Movie.find_in_tmdb(search_array)
+
+    # If the search concluded and no matching movies were found
+    if @movies.nil?
+      flash[:notice] = "No movies found with given parameters!"
+    end
+  end
+
   private
 
   def force_index_redirect
