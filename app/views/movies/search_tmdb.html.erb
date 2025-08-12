@@ -60,6 +60,12 @@
           <td>
             <%= movie.release_date %>
           </td>
+          <td>
+            <%= movie.description %>
+          </td>
+          <td>
+          <%= link_to 'Add movie', movies_path, class: 'btn btn-primary col-2' %>
+          </td>
         </tr>
       <% end %>
     </tbody>

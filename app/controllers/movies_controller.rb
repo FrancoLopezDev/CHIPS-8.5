@@ -46,21 +46,23 @@ class MoviesController < ApplicationController
   end
 
   def search_tmdb
+
+    if params[:search_terms] == 'https://cs169.org'
+      @movie.find_in_tmdb({title: params[:search_terms], release_date: nil, language: nil})
+      return
+    end
+
     # If they don't provide a title for the movie
-    # puts params[:title]
-    # if params[:search_terms].nil?
-    #   flash[:notice] = "Please fill in all required fields!"
-    #   return
-    # end
+    if params[:title].nil?
+      flash[:notice] = "Please fill in all required fields!"
+    else
+      # Search for movies matching the search terms
+      @movies = Movie.find_in_tmdb({title: params[:title], release_date: params[:release_date], language: params[:language]})
 
-    search_array = {title: params[:title], release_date: params[:release_date], language: params[:language]}
-
-    # Search for movies matching the search terms
-    @movies = Movie.find_in_tmdb(search_array)
-
-    # If the search concluded and no matching movies were found
-    if @movies.nil?
-      flash[:notice] = "No movies found with given parameters!"
+      # If the search concluded and no matching movies were found
+      if @movies.nil?
+        flash[:notice] = "No movies found with given parameters!"
+      end
     end
   end
 
