@@ -22,8 +22,9 @@ class MoviesController < ApplicationController
   end
 
   def create
-    @movie = Movie.create!(movie_params)
-    flash[:notice] = "#{@movie.title} was successfully created."
+    movie = params[:movie]
+    @movie = Movie.create({title: movie[:title], rating: movie[:rating], release_date: movie[:release_date]})
+    flash[:notice] = %"#{movie[:title]} was successfully created."
     redirect_to movies_path
   end
 
@@ -33,7 +34,7 @@ class MoviesController < ApplicationController
 
   def update
     @movie = Movie.find params[:id]
-    @movie.update!(movie_params)
+    @movie.update!({title: params[:title], rating: params[:release_date], release_date: params[:release_date]})
     flash[:notice] = "#{@movie.title} was successfully updated."
     redirect_to movie_path(@movie)
   end
@@ -68,7 +69,7 @@ class MoviesController < ApplicationController
 
     Movie.create(movie_info)
 
-    flash.now[:notice] = %"#{params[:title]} was successfully added to RottenPotatoes."
+    flash[:notice] = %"#{params[:title]} was successfully added to RottenPotatoes."
     redirect_to '/search'
   end
   private

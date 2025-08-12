@@ -4,4 +4,8 @@ Rottenpotatoes::Application.routes.draw do
   get '/search', to: 'movies#search_tmdb'
   post '/add_movie', to: 'movies#add_movie'
   root to: redirect('/movies')
+
+  # get 'movies/search_tmdb', to: 'movies#search_tmdb'
+  # post 'movies/search_tmdb', to: 'movies#search_tmdb'
+  # post 'movies/search_tmdb', to: 'movies#search_tmdb'
 end
