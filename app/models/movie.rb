@@ -20,14 +20,16 @@ class Movie < ActiveRecord::Base
     end
     # During Office Hours I was told to have a hardcoded check for this test
 
-    params = {api_key: key, query: search_terms[:title], language: search_terms[:language]}
+    params = {api_key: key, query: search_terms[:title], release_date: search_terms[:release_date], language: search_terms[:language]}
 
     response = Faraday.get(base_url, params)
     data = JSON.parse(response.body)
 
     movie_results = data['results'].map do |movie|
-      Movie.new(title: movie['title'], rating: 'R', description: movie['overview'], release_date: movie['release_date'])
-    end
+      unless Movie.exists?(title: movie['title'])
+        Movie.new(title: movie['title'], rating: 'R', description: movie['overview'], release_date: movie['release_date'].to_date)
+      end
+    end.compact
 
     return movie_results
   end

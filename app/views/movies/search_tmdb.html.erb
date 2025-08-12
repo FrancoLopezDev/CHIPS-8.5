@@ -36,7 +36,7 @@
 
 <% end %>
 </div>
-
+<% if @movies.present? %>
   <h2>Search Results</h2>
   <table class="table table-striped col-md-12" id="search_movies">
     <thead>
@@ -48,7 +48,6 @@
       </tr>
     </thead>
     <tbody>
-    <% if @movies.present? %>
       <% @movies.each do |movie| %>
         <tr>
           <td>
@@ -64,7 +63,13 @@
             <%= movie.description %>
           </td>
           <td>
-          <%= link_to 'Add movie', movies_path, class: 'btn btn-primary col-2' %>
+          <%= form_tag add_movie_path, method: :post do %>
+              <%= hidden_field_tag 'title', movie[:title] %> 
+              <%= hidden_field_tag 'rating', movie[:rating] %> 
+              <%= hidden_field_tag 'release_date', movie[:release_date] %> 
+              <%= hidden_field_tag 'description', movie[:description] %> 
+          <%= submit_tag 'Add Movie' %>
+          <% end %>
           </td>
         </tr>
       <% end %>
