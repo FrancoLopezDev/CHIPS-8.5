@@ -50,9 +50,9 @@ class MoviesController < ApplicationController
       @movies = Movie.find_in_tmdb(params[:search_terms])
 
     # If they don't provide a title for the movie
-    elsif params[:title].nil?
+    elsif params[:commit].present? and params[:title].blank?
       flash.now[:notice] = "Please fill in all required fields!"
-    else
+    elsif params[:commit].present?
       # Search for movies matching the search terms
       @movies = Movie.find_in_tmdb({title: params[:title], release_date: params[:release_date], language: params[:language]})
 
